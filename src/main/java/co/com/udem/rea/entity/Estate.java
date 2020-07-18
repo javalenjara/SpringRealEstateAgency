@@ -1,7 +1,16 @@
 package co.com.udem.rea.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Estate {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String estateCode;
@@ -10,6 +19,8 @@ public class Estate {
 	private int numOfBathrooms;
 	private boolean isForSale;
 	private float estateValue;
+	
+	@ManyToOne
 	private User user;
 	
 	public Estate(Long id, String estateCode, float area, int numOfRooms, int numOfBathrooms, boolean isForSale,

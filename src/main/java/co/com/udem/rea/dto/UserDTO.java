@@ -1,23 +1,26 @@
 package co.com.udem.rea.dto;
 
+import co.com.udem.rea.entity.IdType;
+
 public class UserDTO {
 	
 	private Long id;
 	private String firstName;
 	private String lastName;
-	//private IdType idType;
+	private IdType idType;
 	private Long idNumber;
 	private String address;
 	private String phoneNumber;
 	private String email;
 	private String password;
 	
-	public UserDTO(Long id, String firstName, String lastName, Long idNumber, String address,
+	public UserDTO(Long id, String firstName, String lastName, IdType idType, Long idNumber, String address,
 			String phoneNumber, String email, String password) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.idType = idType;
 		this.idNumber = idNumber;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
@@ -92,4 +95,13 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public IdType getIdType() {
+		return idType;
+	}
+
+	public void setIdType(IdType idType) {
+		this.idType = idType;
+	}
+	
 }

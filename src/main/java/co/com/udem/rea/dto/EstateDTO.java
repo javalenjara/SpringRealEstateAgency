@@ -1,5 +1,7 @@
 package co.com.udem.rea.dto;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class EstateDTO {
 
 	private Long id;
@@ -9,10 +11,12 @@ public class EstateDTO {
 	private int numOfBathrooms;
 	private boolean isForSale;
 	private float estateValue;
-	//private User user;
+	
+	@Autowired
+	private UserDTO userDTO;
 	
 	public EstateDTO(Long id, String estateCode, float area, int numOfRooms, int numOfBathrooms, boolean isForSale,
-			float estateValue) {
+			float estateValue, UserDTO userDTO) {
 		super();
 		this.id = id;
 		this.estateCode = estateCode;
@@ -21,6 +25,7 @@ public class EstateDTO {
 		this.numOfBathrooms = numOfBathrooms;
 		this.isForSale = isForSale;
 		this.estateValue = estateValue;
+		this.userDTO = userDTO;
 	}
 
 	public EstateDTO() {
@@ -82,4 +87,13 @@ public class EstateDTO {
 	public void setEstateValue(float estateValue) {
 		this.estateValue = estateValue;
 	}
+
+	public UserDTO getUserDTO() {
+		return userDTO;
+	}
+
+	public void setUserDTO(UserDTO userDTO) {
+		this.userDTO = userDTO;
+	}
+	
 }
