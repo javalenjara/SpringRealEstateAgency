@@ -1,9 +1,9 @@
 package co.com.udem.rea.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;

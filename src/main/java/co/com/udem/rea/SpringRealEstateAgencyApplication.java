@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import co.com.udem.rea.util.EstateParser;
+import co.com.udem.rea.util.UserParser;
 
 @SpringBootApplication
 public class SpringRealEstateAgencyApplication {
@@ -29,6 +30,11 @@ public class SpringRealEstateAgencyApplication {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public UserParser userParser() {
+		return new UserParser();
 	}
 
 }
