@@ -49,6 +49,7 @@ public class User implements UserDetails {
 	private String address;
 	private String phoneNumber;
 	private String email;
+	private String username;
 	private String password;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -66,8 +67,12 @@ public class User implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.username;
+	}
+	
+	@Override
+	public String getPassword() {
+		return this.password;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import co.com.udem.rea.entity.Estate;
 import co.com.udem.rea.repository.EstateRepository;
 import co.com.udem.rea.util.Constants;
 import co.com.udem.rea.util.EstateParser;
-import co.com.udem.rea.util.UserParser;
+//import co.com.udem.rea.util.UserParser;
 
 @RestController
 public class EstateRestController {

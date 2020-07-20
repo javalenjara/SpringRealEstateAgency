@@ -44,6 +44,7 @@ public class UserRestController {
 					.address(user.getAddress())
 					.phoneNumber(user.getPhoneNumber())
 					.email(user.getEmail())
+					.username(user.getUsername())
 			        .password(this.passwordEncoder.encode(user.getPassword()))
 			        .roles(Arrays.asList("ROLE_USER"))
 			        .build());
