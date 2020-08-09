@@ -32,6 +32,7 @@ public class EstateRestController {
 	public Map<String, String> addEstate(@RequestBody EstateDTO estateDTO) {
 		
 		Map<String, String> response = new HashMap<>();
+		estateDTO.setEstateCode(estateDTO.hashCode());
 		
 		try {
 			Estate estate = convertEstate.convertToEntity(estateDTO);
