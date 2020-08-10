@@ -7,14 +7,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.udem.rea.dto.EstateDTO;
 import co.com.udem.rea.entity.Estate;
+import co.com.udem.rea.entity.User;
 import co.com.udem.rea.repository.EstateRepository;
+import co.com.udem.rea.repository.UserRepository;
+import co.com.udem.rea.security.jwt.JwtTokenProvider;
 import co.com.udem.rea.util.Constants;
 import co.com.udem.rea.util.EstateParser;
-//import co.com.udem.rea.util.UserParser;
 
 @RestController
 public class EstateRestController {
@@ -22,20 +25,27 @@ public class EstateRestController {
 	@Autowired
 	private EstateRepository estateRepository;
 	
+	private UserRepository userRepository;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
 	@Autowired
 	private EstateParser convertEstate;
 	
-//	@Autowired
-//	private UserParser convertUser;
-	
 	@PostMapping("/estates/addEstate")
-	public Map<String, String> addEstate(@RequestBody EstateDTO estateDTO) {
+	public Map<String, String> addEstate(@RequestHeader("Authorization") String token, @RequestBody EstateDTO estateDTO) {
 		
 		Map<String, String> response = new HashMap<>();
+		System.out.println(token);
+		String username = jwtTokenProvider.getUsername(token);
+		User user = userRepository.findByUsername(username).get();
 		estateDTO.setEstateCode(estateDTO.hashCode());
-		
+				
 		try {
 			Estate estate = convertEstate.convertToEntity(estateDTO);
+			estate.setUser(user);
+			
 			estateRepository.save(estate);
 			response.put(Constants.HTTP_CODE, "200");
 			response.put(Constants.SUCCESS_MESSAGE, "1 row added successfuly");
