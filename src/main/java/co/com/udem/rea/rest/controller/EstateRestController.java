@@ -1,10 +1,11 @@
 package co.com.udem.rea.rest.controller;
 
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,13 +19,12 @@ import co.com.udem.rea.repository.UserRepository;
 import co.com.udem.rea.security.jwt.JwtTokenProvider;
 import co.com.udem.rea.util.Constants;
 import co.com.udem.rea.util.EstateParser;
+import net.minidev.json.JSONObject;
 
 @RestController
 public class EstateRestController {
 	
-	@Autowired
 	private EstateRepository estateRepository;
-	
 	private UserRepository userRepository;
 	
 	@Autowired
@@ -33,52 +33,28 @@ public class EstateRestController {
 	@Autowired
 	private EstateParser convertEstate;
 	
-	@PostMapping("/estates/addEstate")
-	public Map<String, String> addEstate(@RequestHeader("Authorization") String token, @RequestBody EstateDTO estateDTO) {
-		
-		Map<String, String> response = new HashMap<>();
-		System.out.println(token);
-		String username = jwtTokenProvider.getUsername(token);
+	@PostMapping(path="/estates/addEstate", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> addEstate(@RequestHeader("Authorization") String token, @RequestBody EstateDTO estateDTO) {
+		String cleanToken =  token.contains("Bearer ") ? token.replace("Bearer ", "") : token;
+		String username = jwtTokenProvider.getUsername(cleanToken);
 		User user = userRepository.findByUsername(username).get();
-		estateDTO.setEstateCode(estateDTO.hashCode());
-				
+		System.out.println(":::::USER:::::\n" + user.toString());
+			
+		JSONObject response = new JSONObject();
 		try {
+			estateDTO.setEstateCode(estateDTO.hashCode());//To-Do: validate if generates a good code or better use UUID.
 			Estate estate = convertEstate.convertToEntity(estateDTO);
 			estate.setUser(user);
-			
 			estateRepository.save(estate);
 			response.put(Constants.HTTP_CODE, "200");
-			response.put(Constants.SUCCESS_MESSAGE, "1 row added successfuly");
-			return response;
+			response.put(Constants.SUCCESS_MESSAGE, "Estate added successfuly");
+			return ResponseEntity.ok(response);
 		} catch (ParseException e) {
 			response.put(Constants.HTTP_CODE, "500");
-			response.put(Constants.ERROR_MESSAGE, "A problem occurred while trying to insert a row");
-			return response;
+			response.put(Constants.ERROR_MESSAGE, "An error ocurred while parsing the actual state DTO");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			        .body(response);
 		}
 	}
-	
-//	@GetMapping("/estates")
-//    public Set<EstateDTO> getEstates(){
-//        Iterable<Estate> iEstates = estateRepository.findAll();
-//        Set<Estate> estates = new HashSet<>();
-//        Set<EstateDTO> estatesDTO = new HashSet<>();
-//        iEstates.iterator().forEachRemaining(estates::add);
-//        estates.stream().forEach(x -> x = convertEstate.convertToDTO(x));
-//        for(int i = 0; i < estates.size(); i++) {
-//            try {
-//            	EstateDTO estateDTO = null;
-//                if(estates..get(i).getDirectorTecnico() != null) {
-//                    directorTecnicoDTO = convertUser.convertToDTO(estates.get(i).getDirectorTecnico());
-//                }
-//                ClubFutbolDTO clubFutbolDTO = convertEstate.convertToDTO(estates.get(i));
-//                clubFutbolDTO.setDirectorTecnicoDTO(directorTecnicoDTO);
-//                estatesDTO.add(clubFutbolDTO);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//       
-//        return estatesDTO;
-//    }
 
 }
