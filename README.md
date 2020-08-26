@@ -4,16 +4,13 @@ Real Estate Agency (REA) is a Spring project carried out to accomplish the java 
 ### Prerequisites
 
 ```
-Under construction
+Be sure you have the following installed
+* JDK 11
+* MySQL
+* H2
 ```
 
-### Install
-
-```
-Under construction
-```
-
-## Powered by
+## Tools
 
 * [Spring](https://spring.io/) - Web Framework
 * [Spring Boot](https://start.spring.io/) - Spring Initializr
