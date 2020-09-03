@@ -35,6 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/users/addUser**").permitAll().and()
                 .authorizeRequests().antMatchers(HttpMethod.GET, "/users/**").permitAll().and()
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/estates/**").permitAll().and()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/estates/**/addEstate/**").permitAll().and()
                 .authorizeRequests().antMatchers("/auth/signin").permitAll().and()
                 .authorizeRequests().antMatchers("/console/**").permitAll() //This is disabled to allow access to H2 web console.
                 .anyRequest().authenticated()

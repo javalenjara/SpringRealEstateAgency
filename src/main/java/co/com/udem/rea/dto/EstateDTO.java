@@ -18,7 +18,7 @@ public class EstateDTO {
 	private int numOfBathrooms;
 	private boolean isForSale;
 	private float estateValue;
-	
+
 	@Autowired
 	private UserDTO userDTO;
 			
