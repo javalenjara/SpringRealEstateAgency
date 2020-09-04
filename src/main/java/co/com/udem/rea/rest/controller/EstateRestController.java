@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.udem.rea.dto.EstateDTO;
@@ -20,6 +21,7 @@ import co.com.udem.rea.entity.User;
 import co.com.udem.rea.exception.ResourceNotFoundException;
 import co.com.udem.rea.repository.EstateRepository;
 import co.com.udem.rea.repository.UserRepository;
+import co.com.udem.rea.security.jwt.JwtTokenProvider;
 import co.com.udem.rea.util.Constants;
 import co.com.udem.rea.util.EstateParser;
 import net.minidev.json.JSONObject;
@@ -27,23 +29,31 @@ import net.minidev.json.JSONObject;
 @RestController
 public class EstateRestController {
 	
+	@Autowired
 	private EstateRepository estateRepository;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
 	private EstateParser convertEstate;
 	
-	@PostMapping(path="/estates/{userId}/addEstate", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> addEstate(@PathVariable Long userId, @RequestBody EstateDTO estateDTO) throws ResourceNotFoundException {
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
+	@PostMapping(path="/estates/addEstate", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> addEstate(@RequestHeader String token, @RequestBody EstateDTO estateDTO) throws ResourceNotFoundException {
 		
-		Optional<User> optionalUser = userRepository.findById(userId);
+		String username = jwtTokenProvider.getUsername(token);
+		
+		Optional<User> optionalUser = userRepository.findByUsername(username);
 		User user;
 		
 		if(optionalUser.isPresent()) {
     		user = optionalUser.get();
 		}
 		else {
-    		throw new ResourceNotFoundException("User not found with id " + userId);
+    		throw new ResourceNotFoundException("User not found with username: " + username);
     	}
 		
 		JSONObject response = new JSONObject();
