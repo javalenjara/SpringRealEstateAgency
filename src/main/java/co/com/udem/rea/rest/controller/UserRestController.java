@@ -81,14 +81,14 @@ public class UserRestController {
     	if(optionalUser.isPresent()) {
     		response.put(Constants.HTTP_CODE, "200");
     		response.put(Constants.SUCCESS_MESSAGE, "User finded");
-    		response.put("User", userRepository.findById(userId).get());
+    		response.put("User", optionalUser.get());
     		return ResponseEntity.ok(response);
     	}else {
     		throw new ResourceNotFoundException("User not found with id " + userId);
     	}
     }
     
-    @PutMapping(path = "/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/users/update/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateUserInfo(@PathVariable Long userId, @RequestBody UserDTO updatedUserDTO) throws ResourceNotFoundException {
     	
     	JSONObject response = new JSONObject();

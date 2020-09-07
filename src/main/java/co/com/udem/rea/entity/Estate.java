@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +28,7 @@ public class Estate implements Serializable {
 	private Long id;
 	
 	@Column(unique = true, length = 16)
-	private UUID estateCode; //UUID version 4.
+	private UUID estateCode;
 	private float area;
 	private int numOfRooms;
 	private int numOfBathrooms;
